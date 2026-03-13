@@ -27,7 +27,7 @@ sudo ufw disable
 ```bash
 sudo certbot certonly --webroot -w /var/www/certbot -d SITE.com
 ```
-**NOTE:** _Auto renews certific_
+**NOTE:** _Auto renews certificate_
 
 # 3 - Create a nginx config
 
