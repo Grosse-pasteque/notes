@@ -29,6 +29,11 @@ sudo certbot certonly --webroot -w /var/www/certbot -d SITE.com
 ```
 **NOTE:** _Auto renews certificate_
 
+Your certificates renewal can be tested via
+```bash
+sudo certbot renew --dry-run
+```
+
 # 3 - Create a nginx config
 
 ```bash
