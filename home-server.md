@@ -57,6 +57,21 @@ server {
     }
 }
 ```
+A simpler route can just be
+```nginx
+server {
+    # ...
+
+    location / {
+        default_type text/plain;
+        return 200 "hello world";
+   }
+   location /test {
+        default_type application/json;
+        return 200 "[1, 2, 3]";
+   }
+}
+```
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
