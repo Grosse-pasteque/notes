@@ -31,3 +31,16 @@ cat /proc/net/dev
 ```bash
 cat /proc/(self|[pid])/(stat|status)
 ```
+# Simple curl
+### fetch headers only
+```bash
+curl -I https://example.com
+```
+### fetch response and headers
+```bash
+curl -i https://example.com
+```
+### fetch with headers
+```bash
+curl -H "Accept-Encoding: gzip, deflate" -i https://example.com
+```
