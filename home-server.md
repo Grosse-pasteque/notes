@@ -5,7 +5,7 @@
 - a machine that can stay on 24/7, preferably `linux server` or a server system
 - `nginx` installed (apt)
 ```bash
-sudo apt install nginx
+sudo apt install nginx certbot
 sudo systemctl enable nginx
 sudo systemctl start nginx
 ```
@@ -77,6 +77,11 @@ server {
    }
 }
 ```
+Enable your site config
+```bash
+sudo ln -s /etc/nginx/sites-available/SITE.conf /etc/nginx/sites-enabled/
+```
+Reload nginx
 ```bash
 sudo nginx -t
 sudo systemctl reload nginx
