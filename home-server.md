@@ -22,7 +22,35 @@ sudo ufw disable
 - your router forwarding ports 443 and 80 to your machine
 - your router firewall allowing ports 443 and 80
 
-# 2 - Linking your ip to the domain you own
+# 2 - Setup nginx to pass ACME challenge
+
+```bash
+sudo nano /etc/nginx/sites-available/default
+```
+Minimal default config
+```nginx
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+Reload nginx
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+# 3 - Linking your ip to the domain you own
 
 ```bash
 sudo certbot certonly --webroot -w /var/www/certbot -d SITE.com
@@ -34,7 +62,7 @@ Your certificates renewal can be tested via
 sudo certbot renew --dry-run
 ```
 
-# 3 - Create a nginx config
+# 4 - Create a nginx config
 
 ```bash
 sudo nano /etc/nginx/sites-available/SITE.conf
@@ -87,7 +115,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-# 4 - System process setup
+# 5 - System process setup
 
 Having your app as a system process makes it auto restart on crash.
 
@@ -114,7 +142,7 @@ sudo systemctl start SITE
 journalctl -u SITE -n 10
 ```
 
-# 5 - Example node js server
+# 6 - Example node js server
 
 Nginx forwards traffix directly to 127.0.0.1:8080 so you don't need to get the certificates on your node app (using https package).
 Hence the server config for when debugging and when hosting the final app doesn't change.
