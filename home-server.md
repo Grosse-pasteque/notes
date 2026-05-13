@@ -160,3 +160,47 @@ app.use('/', (req, res) => console.log(req.ip));
 
 server.listen(8080, () => console.log('listening...'));
 ```
+
+# 7 - Security
+
+When you expose your ip your server becomes very vulnerable (scrappers, ssh brute force, bots, exploits, ...)
+To fix this you can:
+- disable ssh password login
+- disable ssh root login
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+```conf
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+KbdInteractiveAuthentication no
+AuthenticationMethods publickey
+UsePAM no
+```
+Find overwrites and change them
+```bash
+grep -Ri "PasswordAuthentication" /etc/ssh/
+```
+
+- change ssh default port (22) to something else: 
+it can be changed in the ssh config or change the external port that you forward on your router panel
+- setup fail2ban to blacklist ips that bruteforce ssh password
+```bash
+sudo apt install fail2ban
+sudo nano /etc/fail2ban/jail.local
+```
+```ini
+[sshd]
+enabled = true
+port = ssh
+logpath = %(sshd_log)s
+backend = systemd
+
+maxretry = 3
+findtime = 600
+bantime = 3600
+```
+```bash
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+```
